@@ -25,7 +25,7 @@ while(camara.isOpened()):  # check !
         fondo=frame
         fondo2=frame2
         key=cv2.waitKey(1) & 0xFF
-        time.sleep(0.030)
+        time.sleep(0.035)
         
     else:
         break
