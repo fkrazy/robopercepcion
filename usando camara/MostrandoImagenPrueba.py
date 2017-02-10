@@ -1,7 +1,6 @@
 import numpy as np
 import cv2
 import time
-import Movimiento
 camara = cv2.VideoCapture(0)
 fondo= None
 fondo2=None
@@ -20,7 +19,6 @@ while(camara.isOpened()):  # check !
         contornopres=cv2.absdiff(fondo,frame)
         movimiento=cv2.absdiff(fondo2,frame2)
         movimiento = cv2.threshold(movimiento, 25, 255, cv2.THRESH_BINARY)[1]
-        Movimiento.corte(movimiento)
         cv2.imshow('presente', frame)
         cv2.imshow('contorno',contornopres)
         cv2.imshow('movimiento',movimiento)
@@ -32,6 +30,7 @@ while(camara.isOpened()):  # check !
     else:
         break
     if cv2.waitKey(1) & 0xFF == ord('q'):
+        cv2.imwrite('movimiento.png',movimiento)
         break
 # When everything is done release the capture
 camara.release()
