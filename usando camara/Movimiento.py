@@ -1,6 +1,5 @@
-def corte(imagen):
+def corte(linea):
     EsImagen=False
-    linea=imagen.sum(axis=(1,2))
     j=0
     punto=[]
     for i in linea:
@@ -12,3 +11,17 @@ def corte(imagen):
             EsImagen=False
         j+=1
     return punto
+
+def EncontrarEsquinas(imagen, esquinas=[]):
+    linea=imagen.sum(axis=(1,2))
+    tam= esquinas.count
+    esquinas.append(corte(linea))
+    esquinas.append(-1)
+    imagen=imagen.T
+    if esquinas.count <= tam+2:
+        esquinas.append(corte(imagen))
+    else:
+        esquinas.append(EncontrarEsquinas(imagen,esquinas))
+    
+    return esquinas
+    
