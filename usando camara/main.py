@@ -19,7 +19,8 @@ while(camara.isOpened()):  # check !
         contornopres=cv2.absdiff(fondo,frame)
         movimiento=cv2.absdiff(fondo2,frame2)
         movimiento = cv2.threshold(movimiento, 25, 255, cv2.THRESH_BINARY)[1]
-        Movimiento.corte(movimiento)
+        movBidi=movimiento.sum(axis=2)
+        cortes=Movimiento.EncontrarEsquinas(movimientoBidi)
         cv2.imshow('presente', frame)
         cv2.imshow('contorno',contornopres)
         cv2.imshow('movimiento',movimiento)
