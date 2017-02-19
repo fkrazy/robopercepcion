@@ -1,33 +1,22 @@
-def corte(linea,rango=20):
+def corte(linea):
     EsImagen=False
     punto=[]
-    conteo=0
-    for i in range(0,len(linea)-1):
-        if linea[i] != 0 and EsImagen == False:
+    for i in range(0,len(linea)):
+        if linea[i]!= 0 and EsImagen==False:
             punto.append(i)
-            EsImagen = True
+            EsImagen=True
         elif linea[i]==0 and EsImagen==True:
-            conteo+=1
-            if conteo==rango:
-                punto.append(i)
-                EsImagen=False
+            punto.append(i)
+            EsImagen=False
     return punto
      
-def EncontrarEsquinas(imagen, esquinas=[],rango=20):
-    linea=imagen.sum(axis=(1))
-    esquinas.append(corte(linea,rango))
+def EncontrarEsquinas(imagen, esquinas=[]):
+    linea=imagen.sum(axis=(1,2))
+    esquinas.append(corte(linea))
     for i in range(0,len(esquinas[-1]),2):
-        if len(esquinas[-1])!=1 or esquinas[-1][0]!=0:
-            if len(esquinas[-1]) != i+1:
-                subimagen= imagen[esquinas[-1][i]:,:]
-            else:
-                subimagen = imagen[esquinas[-1][i]:, :]
+        if esquinas[-1].count != 1:
+            subimagen= imagen[esquinas[-1][i]:esquinas[-1][i+1],:,:]                
         else:
-            subimagen = imagen[esquinas[-1][i]:, :]
-            tem=corte(linea,rango)
-            if len(tem)==1:
-                break
-        esquinas= EncontrarEsquinas(subimagen.T,esquinas)
-       
+            subimagen=imagen[esquinas[-1][i]:,:,:]        
     return esquinas
 
