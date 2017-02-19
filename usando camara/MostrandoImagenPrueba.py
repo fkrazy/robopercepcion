@@ -1,5 +1,5 @@
 import cv2
-import Movimiento 
+import Movimiento
 im=cv2.imread("movimiento.png")
-Movimiento.
-
+im=im.sum(axis=2)
+linea=Movimiento.EncontrarEsquinas(im,rango=0)
