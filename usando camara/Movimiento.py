@@ -1,4 +1,3 @@
-import herramientas1 as herramientas
 def corte(linea,rango=20):
     EsImagen=False
     punto=[]
@@ -38,9 +37,10 @@ def EncontrarEsquinas(imagen,esquinas=[],rango=20):
 
 def EncontrarCuadros(imagen,rango=20):
     movBidi=imagen.sum(axis=2)
-    esquinas=EncontrarEsquinas(movBidi,rango=rango)
+    esquinas=EncontrarEsquinas(movBidi,esquinas=[],rango=rango)
     cuadros=[]    
-    cuadros.append([0,0,len(movBidi),len(movBidi.T)])
+    if esquinas!= []:
+        cuadros.append([0,0,len(movBidi),len(movBidi.T)])
     esX=True
     for i in range(len(esquinas)-1,0,-1):
         #el carro corre hasta el final del vector
