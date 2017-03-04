@@ -14,7 +14,7 @@ def corte(linea,rango=20):
             conteo+=1
     return punto
      
-def EncontrarEsquinas(imagen,esquinas=[],rango=20,distancia=[0]):
+def EncontrarEsquinas(imagen,esquinas=[],rango=20):
     linea=imagen.sum(axis=(1))
     temesquinas=[]
     temesquinas=corte(linea,rango)
@@ -31,58 +31,33 @@ def EncontrarEsquinas(imagen,esquinas=[],rango=20,distancia=[0]):
             if len(tem)==1:
                 temesquinas[0]=-1
                 esquinas.append(temesquinas)
-                distancia[-1]=-1
                 break
-        esquinas, distancia= EncontrarEsquinas(subimagen.T,esquinas,rango,distancia)        
-        if distancia[-1]==-1:
-            distancia[-1]=len(subimagen)
-            distancia.append(0)
-        esquinas.append(temesquinas)
-    return esquinas, distancia
+        esquinas= EncontrarEsquinas(subimagen.T,esquinas,rango)   
+        esquinas.append(temesquinas[i:i+2])
+    return esquinas
 
 def EncontrarCuadros(imagen,rango=20):
     movBidi=imagen.sum(axis=2)
-    esquinas, distancia=EncontrarEsquinas(movBidi,rango=rango)
-    cuadros=[]
-    x1=0
-    y1=0
-    ancho=0
-    alto=0
-    contador=0
+    esquinas=EncontrarEsquinas(movBidi,rango=rango)
+    cuadros=[]    
+    cuadros.append([0,0,len(movBidi),len(movBidi.T)])
     esX=True
-    for i in range(len(esquinas)-1):
+    for i in range(len(esquinas)-1,0,-1):
         #el carro corre hasta el final del vector
-        if esquinas[i][0]==-1:   
-            #busca el final de cada imagen
-            for ret in range(i-1,0,-1):
-                #recorre de regreso hasta el inicio
-                if esquinas[ret][-1]!=-1:
-                    #define cuando estamos en eje x o en eje y
-                    herramientas.switchBoolean(esX)
-                    for k in range(len(esquinas[ret])-1): 
-                        #busca entre los cortes del eje
-                        if esquinas[ret][k]!=-1:
-                            #busca los parametros del eje a escribir
-                            if contador==0:
-                                if esX:
-                                    x1+=esquinas[ret][k]    
-                                else:
-                                    y1+=esquinas[ret][k]
-                            elif contador==1:
-                                if esX and ancho==0:
-                                    ancho=esquinas[ret][k]-esquinas[ret][k-1]
-                                if not esX and alto==0:
-                                    alto=esquinas[ret][k]-esquinas[ret][k-1]                                              
-                            elif contador==2:
-                                break
-                            if k== i-1:
-                                #elimina el primer corte
-                                esquinas[ret][k]=-1  
-                    contador+=1
-            cuadros.append(x1,y1,ancho,alto)
+        if esquinas[i][0]==-1:
+            cuadros.append([0,0,len(movBidi),len(movBidi.T)])
+            #x,y,ancho,alto
+            esX=True 
+        elif esX:
+            if len(esquinas[i])%2==0:
+                cuadros[-1][2]=esquinas[i][1]
+            cuadros[-1][0]+=esquinas[i][0]
+            esX=False
         else:
-            esX=herramientas.switchBoolean(esX)
-    return cuadros    
-            
+            if len(esquinas[i])%2==0:
+                cuadros[-1][3]=esquinas[i][1]
+            cuadros[-1][1]+=esquinas[i][0]
+            esX=True
+    return cuadros     
             
 
