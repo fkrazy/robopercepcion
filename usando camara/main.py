@@ -18,7 +18,7 @@ while(camara.isOpened()):  # check !
        
         contornopres=cv2.absdiff(fondo,frame)
         movimiento=cv2.absdiff(fondo2,frame2)
-        movimiento = cv2.threshold(movimiento, 25, 255, cv2.THRESH_BINARY)[1]         
+        movimiento = cv2.threshold(movimiento, 12, 255, cv2.THRESH_BINARY)[1]         
         tem=frame.copy()
         fondo2=frame2        
         cuadro= Movimiento.EncontrarCuadros(movimiento)      
